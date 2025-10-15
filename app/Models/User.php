@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\UserPermission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -21,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -34,6 +36,18 @@ class User extends Authenticatable
     ];
 
     /**
+     * Check if the User has a role with the ADMIN enum
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+//        dd($this->role->permission);
+        return $this->role && $this->role->permission === "ADMIN";
+//        return $this->role && $this->role->permission === UserPermission::ADMIN;
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -44,5 +58,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

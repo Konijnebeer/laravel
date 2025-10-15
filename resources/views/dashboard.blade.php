@@ -1,4 +1,12 @@
 <x-app-layout>
+    {{--    @dump(auth()->user())--}}
+    {{--    @if(auth()->user()->id == 1)--}}
+    {{--        <p class="text-white"> id is 1 </p>--}}
+    {{--    @endif--}}
+    {{--    @foreach([1,2,3,4] as $number)--}}
+    {{--        <p class="text-white">$number</p>--}}
+
+    {{--    @endforeach--}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Dashboard') }}
