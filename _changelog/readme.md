@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.0.3] - 2025-10-18
+
+### Added
+
+- Role
+    - Factory
+- Blog
+    - Factory
+    - Seeder
+    - Policy
+    - Form Request
+- Post
+    - Factory
+    - Seeder
+    - Policy
+    - Form Request
+
 ## [0.0.2] - 2025-10-15
 
 ### Updated

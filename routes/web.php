@@ -21,16 +21,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//Route::prefix('admin')->group(function () {
-//    adds admin in front of the url so /admin/route
-//});
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 Route::get('/about', [HomeController::class, 'about'])->name('about');
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/roles', [RoleController::class, 'index'])->name('roles');
+//Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+//    Route::get('/roles', [RoleController::class, 'index'])->name('role.index');
+//    Route::get('/role/{id}', [RoleController::class, 'show'])->name('role.index');
+//    Route::get('/roles/create', [RoleController::class, 'create'])->name('role.create');
+////    adds admin in front of the url so /admin/route
+//});
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::resource('/roles', RoleController::class);
 });
+
+//Route::middleware(['auth', 'admin'])->group(function () {
+//    Route::get('/roles', [RoleController::class, 'index'])->name('roles');
+//});
 
 Route::group([], function () {
     Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');

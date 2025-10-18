@@ -2,19 +2,16 @@
 
 namespace App\Http\Requests;
 
-use App\UserPermission;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Enum;
 
-class StoreRoleRequest extends FormRequest
+class UpdateBlogRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::user()->isAdmin();
+        return false;
     }
 
     /**
@@ -25,9 +22,7 @@ class StoreRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:roles|min:3|max:30',
-            'permission' => 'required'
-//            'permission' => ['required', new Enum(UserPermission::class)],
+            //
         ];
     }
 }
