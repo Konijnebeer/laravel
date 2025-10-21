@@ -31,6 +31,15 @@
     - Seeder
     - Pivot table with Blog
     - Pivot table with Post
+    - Create
+    - Detail
+    - Index
+
+- Posts
+    - Index
+
+- Home
+    - Controller (Random post and blogs based on rules)
 
 - Following
     - Follow and unfollow option Blog
