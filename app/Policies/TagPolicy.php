@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Blog;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Auth;
 
-class BlogPolicy
+class TagPolicy
 {
     /**
      * Perform pre-authorization checks.
@@ -25,13 +24,16 @@ class BlogPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        dd('t');
+
+        return true;
+//        return false;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Blog $blog): bool
+    public function view(User $user, Tag $tag): bool
     {
         return false;
     }
@@ -41,31 +43,29 @@ class BlogPolicy
      */
     public function create(User $user): bool
     {
-        return Auth::user()->created_at <= date_create();
-//        return false;
-        // check here if the user has 5 comments in the database and the age for example
+        return false;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Blog $blog): bool
+    public function update(User $user, Tag $tag): bool
     {
-        return $user->id === $blog->user_id;
+        return false;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Blog $blog): bool
+    public function delete(User $user, Tag $tag): bool
     {
-        return $user->id === $blog->user_id;
+        return false;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Blog $blog): bool
+    public function restore(User $user, Tag $tag): bool
     {
         return false;
     }
@@ -73,7 +73,7 @@ class BlogPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Blog $blog): bool
+    public function forceDelete(User $user, Tag $tag): bool
     {
         return false;
     }

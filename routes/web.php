@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,25 +24,25 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
-Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-Route::get('/about', [HomeController::class, 'about'])->name('about');
 
-//Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-//    Route::get('/roles', [RoleController::class, 'index'])->name('role.index');
-//    Route::get('/role/{id}', [RoleController::class, 'show'])->name('role.index');
-//    Route::get('/roles/create', [RoleController::class, 'create'])->name('role.create');
-////    adds admin in front of the url so /admin/route
-//});
+
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('/roles', RoleController::class);
+    Route::resource('/blogs', BlogController::class)->only('index');
+//    Route::resource('/blogs.posts', PostController::class)->only('index');
+    Route::resource('/tags', TagController::class);
 });
 
-//Route::middleware(['auth', 'admin'])->group(function () {
-//    Route::get('/roles', [RoleController::class, 'index'])->name('roles');
-//});
+Route::middleware('auth')->group(function () {
+    Route::resource('/blogs', BlogController::class)
+        ->only(['create', 'store', 'show', 'edit', 'update', 'destroy'])
+        ->withoutMiddlewareFor('show', 'auth');
+    Route::post('/blogs/{blog}/toggle-follow', [BlogController::class, 'toggleFollow'])->name('blogs.toggleFollow');
+    Route::resource('/blogs.posts', PostController::class)
+        ->withoutMiddlewareFor('show', 'auth');
+//        ->only(['create', 'store', 'show', 'edit', 'update', 'destroy'])
+    Route::post('/posts/{post}/toggle-like', [PostController::class, 'toggleLike'])->name('posts.toggleLike');
 
-Route::group([], function () {
-    Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');
 });
 
 require __DIR__ . '/auth.php';

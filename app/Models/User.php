@@ -64,4 +64,24 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
+
+//    public function posts()
+//    {
+//        return $this->belongsToMany(Post::class);
+//    }
+
+    public function likedPosts()
+    {
+        return $this->belongsToMany(Post::class);
+    }
+
+    public function followedBlogs()
+    {
+        return $this->belongsToMany(Blog::class);
+    }
 }

@@ -3,17 +3,15 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
-class StoreBlogRequest extends FormRequest
+class StoreTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::user()->isAdmin() || Auth::user()->followedBlogs()->count() >= 5;
-
+        return false;
     }
 
     /**
@@ -24,7 +22,8 @@ class StoreBlogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'required|between:30,255'
+            'name' => 'required|between:5,30|unique:tags',
+            'parent_id' => 'nullable|exists:tags,id'
         ];
     }
 }

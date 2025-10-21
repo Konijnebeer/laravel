@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Blog;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateBlogRequest extends FormRequest
 {
@@ -11,7 +13,8 @@ class UpdateBlogRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
+//        return Auth::user()->isAdmin() || Auth::user()->created_at <= date_create();
     }
 
     /**
@@ -22,7 +25,7 @@ class UpdateBlogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'description' => 'required|between:30,255'
         ];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Blog;
+use App\Models\Tag;
 use App\Models\User;
 use App\Models\Role;
 
@@ -16,9 +18,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
         // Default role creation
         $this->call(RoleSeeder::class);
+//        $this->call(BlogSeeder::class);
+//        $this->call(TagSeeder::class);
 
         $adminRoleId = Role::where('name', 'Owner')->value('id');
 
@@ -33,5 +36,25 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@email.com',
             'password' => Hash::make('password123'),
         ]);
+
+        // Create tags
+        $tags = Tag::factory()->count(10)->create();
+
+        // Create users with blogs, posts, and attach tags to blogs
+        User::factory()
+            ->count(10)
+            ->has(
+                Blog::factory()
+                    ->count(rand(1, 3))
+                    // Attach random tags to each blog
+                    ->hasAttached($tags->random(rand(1, 3)), [], 'tags')
+                    // Each blog has posts, set user_id to blog's user_id
+                    ->hasPosts(rand(2, 5), function (array $attributes, Blog $blog) {
+                        return [
+                            'user_id' => $blog->user_id,
+                        ];
+                    })
+            )
+            ->create();
     }
 }

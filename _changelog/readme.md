@@ -1,17 +1,55 @@
 # Changelog
 
+## [0.0.4] - 2025-10-21
+
+### Updated
+
+- Seeding
+    - Users
+        - Tags
+        - Blogs
+            - Posts
+
+### Added
+
+- Blogs
+    - Index
+    - Create
+    - Detail
+    - Edit
+    - Policy Rules
+    - Store Rules (user first needs to follow 5 blogs)
+    - Update Rules
+
+- Tags
+    - Model
+    - Migration
+    - Request
+    - Controller
+    - Policy
+    - Factory
+    - Seeder
+    - Pivot table with Blog
+    - Pivot table with Post
+
+- Following
+    - Follow and unfollow option Blog
+
+- Liking
+    - Liking and unliking option Post
+
 ## [0.0.3] - 2025-10-18
 
 ### Added
 
-- Role
+- Roles
     - Factory
-- Blog
+- Blogs
     - Factory
     - Seeder
     - Policy
     - Form Request
-- Post
+- Posts
     - Factory
     - Seeder
     - Policy

@@ -38,10 +38,6 @@ class RoleController extends Controller
         $role->permission = $request->input('permission');
 
         $role->save();
-//        $role_id = $role->id;
-////        dd($role_id);
-//        $role_url = "roles/$role_id";
-//        dd($role_url);
         redirect("roles/$role->id");
     }
 
