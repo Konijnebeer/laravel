@@ -15,24 +15,28 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles')">
-                        {{ __('Roles') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('blogs.index')" :active="request()->routeIs('blogs')">
-                        {{ __('Blogs') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tags')">
-                        {{ __('Tags') }}
-                    </x-nav-link>
+                    {{--                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">--}}
+                    {{--                        {{ __('Dashboard') }}--}}
+                    {{--                    </x-nav-link>--}}
+                    @auth
+                        @if( auth()->user()->isAdmin())
+
+                            <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles')">
+                                {{ __('Roles') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('blogs.index')" :active="request()->routeIs('blogs')">
+                                {{ __('Blogs') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tags')">
+                                {{ __('Tags') }}
+                            </x-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
             @auth
-
                 <div class="hidden sm:flex sm:items-center sm:ms-6">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -70,6 +74,18 @@
                     </x-dropdown>
                 </div>
             @endauth
+            @guest
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('login') }}"
+                       class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                        {{ __('Login') }}
+                    </a>
+                    <a href="{{ route('register') }}"
+                       class="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white">
+                        {{ __('Register') }}
+                    </a>
+                </div>
+            @endguest
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">

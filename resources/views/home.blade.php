@@ -1,9 +1,13 @@
 <x-app-layout>
-    <h1 class="text-white">Home Page</h1>
-    @auth
-        <p class="text-blue-300">You are logged in</p>
-    @endauth
-    @guest
-        <p class="text-red-300">you are not logged in</p>
-    @endguest
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Home Page') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <x-posts-blog-grid :items="$items"/>
+        </div>
+    </div>
 </x-app-layout>

@@ -42,10 +42,10 @@ class DatabaseSeeder extends Seeder
 
         // Create users with blogs, posts, and attach tags to blogs
         User::factory()
-            ->count(10)
+            ->count(40)
             ->has(
                 Blog::factory()
-                    ->count(rand(1, 3))
+                    ->count(rand(0, 1))
                     // Attach random tags to each blog
                     ->hasAttached($tags->random(rand(1, 3)), [], 'tags')
                     // Each blog has posts, set user_id to blog's user_id

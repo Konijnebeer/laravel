@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.0.5] - 2025-10-22
+
+### Added
+
+- Home page
+    - Random selection of resent (Blogs and Posts)
+    - Masonry Grid (Blogs Post and filler)
+
+### Fixed
+
+- Seeding
+    - Images
+    - 1 Blog per user
+
 ## [0.0.4] - 2025-10-21
 
 ### Updated
