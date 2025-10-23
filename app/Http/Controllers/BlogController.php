@@ -88,15 +88,65 @@ class BlogController extends Controller
     public function toggleFollow(Blog $blog)
     {
         if (!auth()->check()) {
+            if (request()->expectsJson()) {
+                return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+            }
             return redirect()->route('login')->with('error', 'You must be logged in to follow blogs.');
         }
+
         $user = auth()->user();
-        if ($user->followedBlogs->contains($blog->id)) {
+        $isFollowing = $user->followedBlogs->contains($blog->id);
+
+        if ($isFollowing) {
             $user->followedBlogs()->detach($blog->id);
-            return redirect()->back()->with('success', 'You have unfollowed this blog.');
+            $following = false;
+            $message = 'You have unfollowed this blog.';
         } else {
             $user->followedBlogs()->syncWithoutDetaching([$blog->id]);
-            return redirect()->back()->with('success', 'You are now following this blog!');
+            $following = true;
+            $message = 'You are now following this blog!';
         }
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'following' => $following,
+                'message' => $message
+            ]);
+        }
+
+        return redirect()->back()->with('success', $message);
+    }
+
+    public function togglePublish(Blog $blog)
+    {
+        // Only admins can publish/unpublish blogs
+        if (!auth()->check() || !auth()->user()->isAdmin()) {
+            abort(403, 'Only administrators can publish or unpublish blogs.');
+        }
+
+        $isPublished = $blog->published_at !== null;
+
+        if ($isPublished) {
+            $blog->published_at = null;
+            $published = false;
+            $message = 'Blog unpublished successfully.';
+        } else {
+            $blog->published_at = now();
+            $published = true;
+            $message = 'Blog published successfully!';
+        }
+
+        $blog->save();
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'published' => $published,
+                'message' => $message
+            ]);
+        }
+
+        return redirect()->back()->with('success', $message);
     }
 }

@@ -14,6 +14,9 @@
                     <th class="px-4 py-2 text-left text-gray-200">Published At</th>
                     <th class="px-4 py-2 text-left text-gray-200">Text</th>
                     <th class="px-4 py-2 text-left text-gray-200">Liked</th>
+                    @if(auth()->user()->isAdmin() || $posts->contains(fn($p) => $p->blog->user_id === auth()->id()))
+                        <th class="px-4 py-2 text-left text-gray-200">Publish</th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody>
@@ -42,6 +45,19 @@
                                 </button>
                             </form>
                         </td>
+                        @if(auth()->id() === $post->blog->user_id || auth()->user()->isAdmin())
+                            <td class="px-4 py-2">
+                                <form
+                                    action="{{ route('posts.togglePublish', ['blog' => $post->blog_id, 'post' => $post->id]) }}"
+                                    method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                            class="{{ $post->published_at ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-500 hover:bg-blue-600' }} text-white px-3 py-1 rounded">
+                                        {{ $post->published_at ? 'Unpublish' : 'Publish' }}
+                                    </button>
+                                </form>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
                 </tbody>

@@ -9,11 +9,22 @@ use Illuminate\Auth\Access\Response;
 class PostPolicy
 {
     /**
+     * Perform pre-authorization checks.
+     */
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+        return null;
+    }
+
+    /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,15 +32,24 @@ class PostPolicy
      */
     public function view(User $user, Post $post): bool
     {
-        return false;
+        // Anyone can view published posts, only owner/admin can view unpublished
+        if ($post->published_at) {
+            return true;
+        }
+        return $user->id === $post->blog->user_id;
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(User $user, $blogId = null): bool
     {
-        return false;
+        // User must own the blog to create posts in it
+        if ($blogId) {
+            $blog = \App\Models\Blog::find($blogId);
+            return $blog && $user->id === $blog->user_id;
+        }
+        return true; // Has at least one blog
     }
 
     /**
@@ -37,7 +57,8 @@ class PostPolicy
      */
     public function update(User $user, Post $post): bool
     {
-        return false;
+        // Only the blog owner can update their posts
+        return $user->id === $post->blog->user_id;
     }
 
     /**
@@ -45,7 +66,8 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
-        return false;
+        // Only the blog owner can delete their posts
+        return $user->id === $post->blog->user_id;
     }
 
     /**
@@ -53,7 +75,7 @@ class PostPolicy
      */
     public function restore(User $user, Post $post): bool
     {
-        return false;
+        return $user->id === $post->blog->user_id;
     }
 
     /**
@@ -61,6 +83,6 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post): bool
     {
-        return false;
+        return $user->id === $post->blog->user_id;
     }
 }

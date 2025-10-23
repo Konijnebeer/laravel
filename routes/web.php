@@ -30,7 +30,7 @@ Route::get('/home/search', [HomeController::class, 'search'])->name('home.search
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::resource('/roles', RoleController::class);
     Route::resource('/blogs', BlogController::class)->only('index');
-//    Route::resource('/blogs.posts', PostController::class)->only('index');
+    Route::resource('/blogs.posts', PostController::class)->only('index');
     Route::resource('/tags', TagController::class);
 });
 
@@ -39,11 +39,12 @@ Route::middleware('auth')->group(function () {
         ->only(['create', 'store', 'show', 'edit', 'update', 'destroy'])
         ->withoutMiddlewareFor('show', 'auth');
     Route::post('/blogs/{blog}/toggle-follow', [BlogController::class, 'toggleFollow'])->name('blogs.toggleFollow');
+    Route::post('/blogs/{blog}/toggle-publish', [BlogController::class, 'togglePublish'])->name('blogs.togglePublish');
     Route::resource('/blogs.posts', PostController::class)
-        ->withoutMiddlewareFor('show', 'auth');
-//        ->only(['create', 'store', 'show', 'edit', 'update', 'destroy'])
+        ->withoutMiddlewareFor('show', 'auth')
+        ->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
     Route::post('/posts/{post}/toggle-like', [PostController::class, 'toggleLike'])->name('posts.toggleLike');
-
+    Route::post('/blogs/{blog}/posts/{post}/toggle-publish', [PostController::class, 'publish'])->name('posts.togglePublish');
 });
 
 require __DIR__ . '/auth.php';

@@ -1,10 +1,31 @@
 # Changelog
 
+## [0.0.6] - 2025-10-23
+
+### Changed
+
+- Home page
+    - Redone Post and Blog cards
+    - Cards have Liked and Follow buttons
+- Admin Dashboard
+    - Publish and Un publish (Posts and Blogs)
+- Blogs
+    - Blog view (with current Posts)
+        - Owner and Admin management panel
+
+### Added
+
+- Blogs
+    - Publish/Unpublish
+- Posts
+    - Publish/Unpublish
+    - Post view
+
 ## [0.0.5] - 2025-10-22
 
 ### Added
 
-- Home page
+- Home Page
     - Random selection of resent (Blogs and Posts)
     - Masonry Grid (Blogs Post and filler)
 

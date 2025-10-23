@@ -14,6 +14,9 @@
                     <th class="px-4 py-2 text-left text-gray-200">Published At</th>
                     <th class="px-4 py-2 text-left text-gray-200">Posts</th>
                     <th class="px-4 py-2 text-left text-gray-200">Follow</th>
+                    @if(auth()->user()->isAdmin())
+                        <th class="px-4 py-2 text-left text-gray-200">Publish</th>
+                    @endif
                 </tr>
                 </thead>
                 <tbody>
@@ -43,6 +46,17 @@
                                 </button>
                             </form>
                         </td>
+                        @if(auth()->user()->isAdmin())
+                            <td class="px-4 py-2">
+                                <form action="{{ route('blogs.togglePublish', $blog->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                            class="{{ $blog->published_at ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-500 hover:bg-blue-600' }} text-white px-3 py-1 rounded">
+                                        {{ $blog->published_at ? 'Unpublish' : 'Publish' }}
+                                    </button>
+                                </form>
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
                 </tbody>

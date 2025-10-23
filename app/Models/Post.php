@@ -15,6 +15,7 @@ class Post extends Model
         'blog_id',
         'name',
         'header_image',
+        'content',
         'rich_text',
         'text',
         'published_at',

@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('header_image');
             $table->json('rich_text')->nullable();
             $table->text('text')->nullable();
-            $table->dateTime('published_at');
+            $table->dateTime('published_at')->nullable();
             $table->timestamps();
         });
     }

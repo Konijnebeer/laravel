@@ -11,7 +11,8 @@ class StorePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // Authorization is handled by PostPolicy
+        return true;
     }
 
     /**
@@ -22,7 +23,11 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'header_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'text' => 'required|string',
+            'rich_text' => 'nullable|json',
+            'published_at' => 'nullable|date',
         ];
     }
 }
