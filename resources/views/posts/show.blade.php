@@ -4,7 +4,6 @@
             {{ __('Post') }}
         </h2>
     </x-slot>
-
     <div class="bg-primary-background min-h-screen">
         <!-- Post Header Banner -->
         <section class="relative">
@@ -12,6 +11,7 @@
                 <!-- Banner Image -->
                 <div class="h-80 overflow-hidden relative">
                     <img src="{{ $post->header_image }}" alt="{{ $post->name }}" class="w-full h-full object-cover">
+                    class="w-full h-full object-cover">
                     <!-- Gradient Overlay -->
                     <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/40 to-transparent"></div>
                 </div>
@@ -27,20 +27,26 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round">
-                                    <path d="M12.5 22H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v9.5"/>
-                                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                    <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/>
+                                    <path d="M2 6h4"/>
+                                    <path d="M2 10h4"/>
+                                    <path d="M2 14h4"/>
+                                    <path d="M2 18h4"/>
                                     <path
-                                        d="M13.378 15.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>
+                                        d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>
                                 </svg>
                                 <span class="font-medium">{{ $post->blog->user->name ?? 'Unknown' }}'s Blog</span>
                             </a>
                         </div>
 
                         <!-- Like Button with Count -->
+                        @php
+                            $likeCount = $post->likedByUsers->count();
+                        @endphp
+
                         @auth
                             @php
                                 $liked = auth()->user()->likedPosts->contains($post->id);
-                                $likeCount = $post->likedByUsers->count();
                             @endphp
                             <button onclick="toggleLike(event, {{ $post->id }})"
                                     class="like-btn-{{ $post->id }} flex items-center gap-3 {{ $liked ? 'bg-fail' : 'bg-accent' }} hover:bg-secondary text-white px-6 py-4 rounded-xl shadow-lg font-semibold transition-all hover:scale-105">
@@ -62,6 +68,21 @@
                                     <p class="text-xs text-white/80">Likes</p>
                                 </div>
                             </button>
+                        @else
+                            <!-- Static like count display for guests -->
+                            <div
+                                class="flex items-center gap-3 bg-accent/80 text-white px-6 py-4 rounded-xl shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <path
+                                        d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+                                </svg>
+                                <div class="text-left">
+                                    <p class="text-2xl font-bold">{{ $likeCount }}</p>
+                                    <p class="text-xs opacity-70">Likes</p>
+                                </div>
+                            </div>
                         @endauth
                     </div>
                 </div>
@@ -76,19 +97,25 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round">
-                                    <path d="M12.5 22H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v9.5"/>
-                                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                    <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/>
+                                    <path d="M2 6h4"/>
+                                    <path d="M2 10h4"/>
+                                    <path d="M2 14h4"/>
+                                    <path d="M2 18h4"/>
                                     <path
-                                        d="M13.378 15.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>
+                                        d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>
                                 </svg>
                                 <span class="font-medium">{{ $post->blog->user->name ?? 'Unknown' }}'s Blog</span>
                             </a>
                         </div>
 
+                        @php
+                            $likeCount = $post->likedByUsers->count();
+                        @endphp
+
                         @auth
                             @php
                                 $liked = auth()->user()->likedPosts->contains($post->id);
-                                $likeCount = $post->likedByUsers->count();
                             @endphp
                             <button onclick="toggleLike(event, {{ $post->id }})"
                                     class="like-btn-{{ $post->id }} flex items-center gap-3 {{ $liked ? 'bg-fail' : 'bg-success' }} hover:bg-secondary text-white px-6 py-4 rounded-xl shadow-lg font-semibold transition-all hover:scale-105">
@@ -110,6 +137,21 @@
                                     <p class="text-xs text-white/80 like-text-{{ $post->id }}">Likes</p>
                                 </div>
                             </button>
+                        @else
+                            <!-- Static like count display for guests -->
+                            <div
+                                class="flex items-center gap-3 bg-primary/10 text-primary px-6 py-4 rounded-xl shadow-lg">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <path
+                                        d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+                                </svg>
+                                <div class="text-left">
+                                    <p class="text-2xl font-bold">{{ $likeCount }}</p>
+                                    <p class="text-xs opacity-70">Likes</p>
+                                </div>
+                            </div>
                         @endauth
                     </div>
                 </div>

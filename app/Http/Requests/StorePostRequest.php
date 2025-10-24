@@ -11,7 +11,6 @@ class StorePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Authorization is handled by PostPolicy
         return true;
     }
 

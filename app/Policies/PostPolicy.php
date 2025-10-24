@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Blog;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -30,13 +31,14 @@ class PostPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Post $post): bool
+    public function view(?User $user, Post $post): bool
     {
         // Anyone can view published posts, only owner/admin can view unpublished
         if ($post->published_at) {
             return true;
         }
-        return $user->id === $post->blog->user_id;
+        // Unpublished posts can only be viewed by the blog owner
+        return $user && $user->id === $post->blog->user_id;
     }
 
     /**
@@ -46,7 +48,7 @@ class PostPolicy
     {
         // User must own the blog to create posts in it
         if ($blogId) {
-            $blog = \App\Models\Blog::find($blogId);
+            $blog = Blog::find($blogId);
             return $blog && $user->id === $blog->user_id;
         }
         return true; // Has at least one blog

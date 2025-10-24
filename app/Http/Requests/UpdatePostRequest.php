@@ -24,8 +24,8 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|required|string|max:255',
-            'header_image' => 'nullable|url|max:500',
-            'content' => 'nullable|string',
+            'header_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'text' => 'nullable|string',
             'rich_text' => 'nullable|json',
             'published_at' => 'nullable|date',
         ];

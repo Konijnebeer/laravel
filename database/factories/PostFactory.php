@@ -16,9 +16,17 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $catImageUrls = [
+            'https://cataas.com/cat?width=400&height=1200',
+            'https://cataas.com/cat/cute?width=400&height=1200',
+            'https://cataas.com/cat?width=400&height=1200&filter=mono',
+            'https://cataas.com/cat/cute,funny?width=400&height=1200',
+            'https://cataas.com/cat/kitten?width=400&height=1200',
+        ];
+
         return [
             'name' => $this->faker->sentence(6),
-            'header_image' => 'https://picsum.photos/640/480?random=' . $this->faker->numberBetween(1, 1000),
+            'header_image' => $this->faker->randomElement($catImageUrls),
             'rich_text' => json_encode(['content' => $this->faker->paragraphs(2)]),
             'text' => $this->faker->paragraph(4),
             'published_at' => $this->faker->dateTimeBetween('-1 month', 'now'),

@@ -11,6 +11,9 @@ class Role extends Model
         'name',
         'permission',
     ];
+//    protected $casts = [
+//        'permission' => UserPermission::class,
+//    ];
     protected array $cast = [
         'permission' => UserPermission::class,
     ];

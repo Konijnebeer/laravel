@@ -83,13 +83,27 @@ class HomeController extends Controller
             ]);
         }
 
-        // Add 6 image fillers
-        for ($i = 0; $i < 6; $i++) {
+        // Cat image URLs from cataas.com
+        $catImages = [
+            'https://cataas.com/cat?type=square',
+            'https://cataas.com/cat/cute?type=square',
+            'https://cataas.com/cat/gif',
+            'https://cataas.com/cat?filter=mono&type=square',
+            'https://cataas.com/cat/says/Meow?fontSize=30&fontColor=white&type=square',
+            'https://cataas.com/cat?filter=blur&type=square',
+            'https://cataas.com/cat/cute,funny?type=square',
+            'https://cataas.com/cat/says/Hello?fontSize=25&fontColor=orange&type=square',
+            'https://cataas.com/cat?filter=sepia&type=square',
+            'https://cataas.com/cat/kitten?type=square',
+        ];
+
+        // Add image fillers
+        foreach ($catImages as $catImage) {
             $items->push([
                 'type' => 'filler',
                 'data' => [
                     'filler_type' => 'image',
-                    'image' => 'https://picsum.photos/200/200?random=' . rand(1000, 9999)
+                    'image' => $catImage
                 ]
             ]);
         }

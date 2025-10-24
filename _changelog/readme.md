@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.7] - 2025-10-24
+
+### Changed
+
+- Blogs
+    - Create page (with requirements)
+
+### Added
+
+- Posts
+    - Create page
+
 ## [0.0.6] - 2025-10-23
 
 ### Changed

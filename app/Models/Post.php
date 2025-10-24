@@ -15,7 +15,6 @@ class Post extends Model
         'blog_id',
         'name',
         'header_image',
-        'content',
         'rich_text',
         'text',
         'published_at',
@@ -39,5 +38,10 @@ class Post extends Model
     public function likedByUsers()
     {
         return $this->belongsToMany(User::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 }

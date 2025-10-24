@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -41,6 +42,11 @@ class PostController extends Controller
         $validated = $request->validated();
         $validated['blog_id'] = $blog->id;
         $validated['user_id'] = $blog->user_id;
+
+        // Handle file upload
+        if ($request->hasFile('header_image')) {
+            $validated['header_image'] = $request->file('header_image')->store('post-images', 'public');
+        }
 
         $post = Post::create($validated);
 
@@ -88,6 +94,18 @@ class PostController extends Controller
         $this->authorize('update', $post);
 
         $validated = $request->validated();
+
+        // Handle file upload
+        if ($request->hasFile('header_image')) {
+            // Delete old image if it exists
+            if ($post->header_image) {
+                Storage::disk('public')->delete($post->header_image);
+            }
+
+            // Store new image
+            $validated['header_image'] = $request->file('header_image')->store('post-images', 'public');
+        }
+
         $post->update($validated);
 
         return redirect()->route('blogs.posts.show', ['blog' => $blog->id, 'post' => $post->id])
@@ -104,6 +122,11 @@ class PostController extends Controller
         }
 
         $this->authorize('delete', $post);
+
+        // Delete associated image file if it exists
+        if ($post->header_image) {
+            Storage::disk('public')->delete($post->header_image);
+        }
 
         $post->delete();
 

@@ -6,10 +6,11 @@
 @endphp
 
 <a href="{{ route('blogs.posts.show', ['blog' => $post->blog_id, 'post' => $post->id]) }}"
-   class="block col-span-2 row-span-1 rounded-xl shadow-md overflow-hidden transition-transform hover:scale-[1.02] bg-primary-background">
+   class="flex flex-col col-span-2 row-span-1 rounded-xl shadow-md overflow-hidden transition-transform hover:scale-[1.02] bg-primary-background">
     @if($post->header_image)
         <div class="h-28 overflow-hidden relative">
             <img src="{{ $post->header_image }}" alt="{{ $post->name }}" class="w-full h-full object-cover">
+            class="w-full h-full object-cover">
             @auth
                 <button onclick="toggleLike(event, {{ $post->id }})"
                         class="like-btn-{{ $post->id }} absolute top-2 right-2 p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-md hover:bg-white transition-all {{ $liked ? 'text-fail' : 'text-accent' }}">
@@ -29,8 +30,14 @@
                 </button>
             @endauth
         </div>
+        <div class="p-4 flex-shrink-0">
+            <h3 class="font-bold text-lg text-primary line-clamp-2">{{ $post->name }}</h3>
+        </div>
+    @else
+        <div class="flex-1 p-4 flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
+            <h3 class="font-bold text-lg text-primary text-center line-clamp-3">{{ $post->name }}</h3>
+        </div>
     @endif
-    <h3 class="font-bold text-lg text-primary mb-1 p-4">{{ $post->name }}</h3>
 </a>
 
 <script>
