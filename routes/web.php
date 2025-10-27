@@ -41,8 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/blogs/{blog}/toggle-follow', [BlogController::class, 'toggleFollow'])->name('blogs.toggleFollow');
     Route::post('/blogs/{blog}/toggle-publish', [BlogController::class, 'togglePublish'])->name('blogs.togglePublish');
     Route::resource('/blogs.posts', PostController::class)
-        ->withoutMiddlewareFor('show', 'auth')
-        ->only(['create', 'store', 'show', 'edit', 'update', 'destroy']);
+        ->only(['create', 'store', 'show', 'edit', 'update', 'destroy'])
+        ->withoutMiddlewareFor('show', 'auth');
     Route::post('/posts/{post}/toggle-like', [PostController::class, 'toggleLike'])->name('posts.toggleLike');
     Route::post('/blogs/{blog}/posts/{post}/toggle-publish', [PostController::class, 'publish'])->name('posts.togglePublish');
 });

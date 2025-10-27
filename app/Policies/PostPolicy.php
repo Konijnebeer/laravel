@@ -49,9 +49,12 @@ class PostPolicy
         // User must own the blog to create posts in it
         if ($blogId) {
             $blog = Blog::find($blogId);
-            return $blog && $user->id === $blog->user_id;
+            if ($blog->published_at !== null) {
+                return $blog && $user->id === $blog->user_id;
+            }
+            return false;
         }
-        return true; // Has at least one blog
+        return false;
     }
 
     /**

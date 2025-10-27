@@ -1,16 +1,24 @@
 @props(['post'])
 
 @php
+    use Illuminate\Support\Facades\Storage;
+
     $liked = auth()->check() && $post->likedByUsers->contains(auth()->id());
     $followed = auth()->check() && $post->blog && $post->blog->followers->contains(auth()->id());
+
+    $imageUrl = null;
+    if ($post->header_image) {
+        $imageUrl = preg_match('/^https?:\\/\\//i', $post->header_image)
+            ? $post->header_image
+            : Storage::url($post->header_image);
+    }
 @endphp
 
 <a href="{{ route('blogs.posts.show', ['blog' => $post->blog_id, 'post' => $post->id]) }}"
-   class="flex flex-col col-span-2 row-span-1 rounded-xl shadow-md overflow-hidden transition-transform hover:scale-[1.02] bg-primary-background">
-    @if($post->header_image)
+   class="flex flex-col col-span-2 row-span-1 rounded-xl shadow-md overflow-hidden transition-transform hover:scale-[1.02] bg-accent">
+    @if($imageUrl)
         <div class="h-28 overflow-hidden relative">
-            <img src="{{ $post->header_image }}" alt="{{ $post->name }}" class="w-full h-full object-cover">
-            class="w-full h-full object-cover">
+            <img src="{{ $imageUrl }}" alt="{{ $post->name }}" class="w-full h-full object-cover">
             @auth
                 <button onclick="toggleLike(event, {{ $post->id }})"
                         class="like-btn-{{ $post->id }} absolute top-2 right-2 p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-md hover:bg-white transition-all {{ $liked ? 'text-fail' : 'text-accent' }}">
@@ -73,4 +81,3 @@
             .catch(console.error);
     }
 </script>
-

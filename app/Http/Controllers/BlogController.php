@@ -44,6 +44,13 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
+        if ($blog->published_at === null) {
+            if (Auth::user()->id !== $blog->user_id) {
+                if (!Auth::user()->isAdmin()) {
+                    abort(403, 'Blog not published');
+                }
+            }
+        }
         return view('blog.show', compact('blog'));
     }
 
@@ -67,7 +74,7 @@ class BlogController extends Controller
         $validated = $request->validated();
         $blog->update($validated);
 
-        return redirect()->route('blogs.index')
+        return redirect()->route('blogs.show', $blog->id)
             ->with('success', 'Blog updated successfully!');
     }
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.0.8] - 2025-10-27
+
+### Changed
+
+- Blogs
+    - Edit Blog page
+
+- Posts
+    - Blog must be published before you can post
+    - Edit Post page
+
+### Fixed
+
+- Database
+    - Fixed unique `blog_id user_id` on pivot table
+
 ## [0.0.7] - 2025-10-24
 
 ### Changed

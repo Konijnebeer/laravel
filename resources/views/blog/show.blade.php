@@ -161,10 +161,16 @@
 
                     <!-- Create New Post Button -->
                     <div class="p-4 border-b border-gray-200">
-                        <a href="{{ route('blogs.posts.create', $blog->id) }}"
-                           class="block w-full bg-success hover:bg-success/80 text-white text-center font-semibold py-3 rounded-lg transition-colors">
-                            + New Post
-                        </a>
+                        @if($blog->published_at === null && !auth()->user()->isAdmin())
+                            <a class="block w-full bg-success/40 cursor-not-allowed text-white text-center font-semibold py-3 rounded-lg transition-colors">
+                                + New Post
+                            </a>
+                        @else
+                            <a href="{{ route('blogs.posts.create', $blog->id) }}"
+                               class="block w-full bg-success hover:bg-success/80 text-white text-center font-semibold py-3 rounded-lg transition-colors">
+                                + New Post
+                            </a>
+                        @endif
                     </div>
 
                     <!-- Edit & Delete Blog Buttons -->

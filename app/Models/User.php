@@ -42,8 +42,8 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-//        dd($this->role->permission);
         return $this->role && $this->role->permission === "ADMIN";
+        // Is stored as string not as an enum
 //        return $this->role && $this->role->permission === UserPermission::ADMIN;
     }
 

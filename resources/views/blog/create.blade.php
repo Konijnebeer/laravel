@@ -1,5 +1,5 @@
 <x-app-layout>
-    @if(Auth::user()->followedBlogs()->count() >= 5)
+    @if(Auth::user()->followedBlogs()->count() >= 5 || Auth::user()->isAdmin())
         <x-forms.form-card
             action="{{ route('blogs.store') }}"
             method="POST"
@@ -13,7 +13,24 @@
                     rows="4"
                     placeholder="Describe what your blog is about..."
                     required/>
-
+            </x-forms.group>
+            <x-forms.group>
+                <div class="flex flex-row space-x-1 justify-around">
+                    <div>
+                        test
+                    </div>
+                    <div>
+                        test
+                    </div>
+                    <div>
+                        test
+                    </div>
+                    <div>
+                        test
+                    </div>
+                </div>
+            </x-forms.group>
+            <x-forms.group>
                 <div class="flex gap-4 pt-4">
                     <x-forms.button
                         variant="secondary"
