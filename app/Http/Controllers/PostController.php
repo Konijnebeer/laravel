@@ -49,6 +49,7 @@ class PostController extends Controller
         }
 
         $post = Post::create($validated);
+        $post->tags()->sync($request->input('tags', []));
 
         return redirect()->route('blogs.posts.show', ['blog' => $blog->id, 'post' => $post->id])
             ->with('success', 'Post created successfully!');
@@ -107,6 +108,7 @@ class PostController extends Controller
         }
 
         $post->update($validated);
+        $post->tags()->sync($request->input('tags', []));
 
         return redirect()->route('blogs.posts.show', ['blog' => $blog->id, 'post' => $post->id])
             ->with('success', 'Post updated successfully!');

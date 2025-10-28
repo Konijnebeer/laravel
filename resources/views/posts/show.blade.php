@@ -200,7 +200,7 @@
                     <div class="flex items-center gap-2 flex-wrap">
                         @foreach($post->tags as $tag)
                             <span class="bg-success/20 text-primary px-3 py-1 rounded-full text-xs font-medium">
-                                #{{ $tag->name }}
+                                {{ $tag->name }}
                             </span>
                         @endforeach
                     </div>

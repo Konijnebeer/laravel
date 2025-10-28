@@ -18,10 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Default role creation
+        // Seed roles and tags first
         $this->call(RoleSeeder::class);
-//        $this->call(BlogSeeder::class);
-//        $this->call(TagSeeder::class);
+        $this->call(TagSeeder::class);
 
         $adminRoleId = Role::where('name', 'Owner')->value('id');
 
@@ -37,24 +36,56 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password123'),
         ]);
 
-        // Create tags
-        $tags = Tag::factory()->count(10)->create();
+        // Get all tags (including hierarchical cat-related tags)
+        $tags = Tag::all();
 
-        // Create users with blogs, posts, and attach tags to blogs
+        // Create users with blogs and posts using Laravel 11+ best practices
         User::factory()
             ->count(40)
-            ->has(
-                Blog::factory()
-                    ->count(rand(0, 1))
-                    // Attach random tags to each blog
-                    ->hasAttached($tags->random(rand(1, 3)), [], 'tags')
-                    // Each blog has posts, set user_id to blog's user_id
-                    ->hasPosts(rand(2, 5), function (array $attributes, Blog $blog) {
-                        return [
-                            'user_id' => $blog->user_id,
-                        ];
-                    })
-            )
+            ->create()
+            ->each(function ($user) use ($tags) {
+                // 50% chance each user has a blog
+                if (fake()->boolean()) {
+                    $this->createBlogWithPostsAndTags($user, $tags);
+                }
+            });
+    }
+
+    /**
+     * Create a blog with posts and attach tags
+     */
+    private function createBlogWithPostsAndTags(User $user, $tags): void
+    {
+        // Create blog for user
+        $blog = Blog::factory()
+            ->for($user)
             ->create();
+
+        // Attach 3 random tags to the blog
+        $blog->tags()->attach(
+            $tags->random(min(3, $tags->count()))->pluck('id')
+        );
+
+        // Create 2-5 posts for the blog
+        collect(range(1, fake()->numberBetween(2, 5)))
+            ->each(fn() => tap(
+                $blog->posts()->create([
+                    'user_id' => $user->id,
+                    'name' => fake()->sentence(),
+                    'header_image' => fake()->randomElement([
+                        'https://cataas.com/cat?width=400&height=1200',
+                        'https://cataas.com/cat/cute?width=400&height=1200',
+                        'https://cataas.com/cat?width=400&height=1200&filter=mono',
+                        'https://cataas.com/cat/cute,funny?width=400&height=1200',
+                        'https://cataas.com/cat/kitten?width=400&height=1200',
+                    ]),
+                    'text' => fake()->paragraphs(3, true),
+                    'published_at' => fake()->boolean() ? now() : null,
+                ]),
+                // Attach 3 random tags to each post
+                fn($post) => $post->tags()->attach(
+                    $tags->random(min(3, $tags->count()))->pluck('id')
+                )
+            ));
     }
 }

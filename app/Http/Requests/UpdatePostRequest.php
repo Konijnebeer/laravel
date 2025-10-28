@@ -11,7 +11,6 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // Authorization is handled by PostPolicy
         return true;
     }
 
@@ -23,10 +22,12 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required|string|max:255',
+            'name' => 'required|string|between:20,255',
             'header_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'text' => 'nullable|string',
+            'text' => 'required|string|between:100,300',
             'rich_text' => 'nullable|json',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
             'published_at' => 'nullable|date',
         ];
     }

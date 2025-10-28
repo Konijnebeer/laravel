@@ -25,7 +25,9 @@ class UpdateBlogRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'required|between:30,255'
+            'description' => 'required|between:30,255',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
         ];
     }
 }

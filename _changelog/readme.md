@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.1.0] - 2025-10-28
+
+### Changed
+
+- Tags
+    - custom tag seeding
+
+- Blogs
+    - Create form now has tags
+    - Tags get saved in Database
+
+- Posts
+    - Create form now has tags
+    - Tags get saved in Database
+
+- Seeding
+    - User
+        - Blog
+            - Tags
+            - Posts
+                - Tags
+
+- Navigation
+    - Search page button
+    - Dynamic go to blog or create blog button in dropdown
+
+### Added
+
+- Home
+    - Search page
+    - Search functionality
+        - Title, Description & Tags
+
 ## [0.0.8] - 2025-10-27
 
 ### Changed
@@ -69,8 +102,8 @@
 
 - Seeding
     - Users
-        - Tags
         - Blogs
+            - Tags
             - Posts
 
 ### Added

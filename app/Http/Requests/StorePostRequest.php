@@ -22,10 +22,12 @@ class StorePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|between:20,255',
             'header_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'text' => 'required|string',
+            'text' => 'required|string|between:100,300',
             'rich_text' => 'nullable|json',
+            'tags' => 'nullable|array',
+            'tags.*' => 'integer|exists:tags,id',
             'published_at' => 'nullable|date',
         ];
     }

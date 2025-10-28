@@ -116,6 +116,67 @@ class HomeController extends Controller
 
     public function search()
     {
+        $items = null;
+        $posts = true;
+        $blogs = true;
+        $search = '';
+        $tags = [];
+        return view('search', compact('items', 'posts', 'blogs', 'search', 'tags'));
+    }
 
+    public function results(Request $request)
+    {
+        $posts = $request->has('posts');
+        $blogs = $request->has('blogs');
+        $search = $request->input('search');
+        $tags = $request->input('tags', []);
+
+        $items = collect();
+
+        // If posts enabled
+        if ($posts) {
+            $postQuery = Post::query()
+                ->when($search, function ($query, $search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('title', 'like', "%$search%")
+                            ->orWhere('text', 'like', "%$search%");
+                    });
+                })
+                ->when(!empty($tags), function ($query) use ($tags) {
+                    $query->whereHas('tags', function ($q) use ($tags) {
+                        $q->whereIn('tags.id', $tags);
+                    });
+                })
+                ->where('published_at', '!=', 'null');
+
+            foreach ($postQuery->get() as $post) {
+                $items->push(['type' => 'post', 'data' => $post]);
+            }
+        }
+
+        // Search blogs if enabled
+        if ($blogs) {
+            $blogQuery = Blog::query()
+                ->when($search, function ($query, $search) {
+                    $query->where(function ($q) use ($search) {
+                        $q->where('name', 'like', "%$search%")
+                            ->orWhere('description', 'like', "%$search%");
+                    });
+                })
+                ->when(!empty($tags), function ($query) use ($tags) {
+                    $query->whereHas('tags', function ($q) use ($tags) {
+                        $q->whereIn('tags.id', $tags);
+                    });
+                })
+                ->where('published_at', '!=', 'null');
+
+            foreach ($blogQuery->get() as $blog) {
+                $items->push(['type' => 'blog', 'data' => $blog]);
+            }
+        }
+
+        $items->shuffle();
+
+        return view('search', compact('items', 'posts', 'blogs', 'search', 'tags'));
     }
 }

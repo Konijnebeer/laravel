@@ -41,9 +41,7 @@ class BlogPolicy
      */
     public function create(User $user): bool
     {
-        return Auth::user()->created_at <= date_create();
-//        return false;
-        // check here if the user has 5 comments in the database and the age for example
+        return true;
     }
 
     /**

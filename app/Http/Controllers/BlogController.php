@@ -31,10 +31,18 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
+        if (!Auth::user()->isAdmin()) {
+            if (!Auth::user()->followedBlogs()->count() >= 5) {
+                abort(401, 'You need to follow at least 5 blogs');
+            }
+        }
+
         $validated = $request->validated();
         $validated['user_id'] = Auth()->id();
 
         $blog = Blog::create($validated);
+        $blog->tags()->sync($request->input('tags', []));
+
         return redirect()->route('blogs.show', $blog->id)
             ->with('success', 'Blog created successfully!');
     }
@@ -70,9 +78,10 @@ class BlogController extends Controller
      */
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
-
         $validated = $request->validated();
+
         $blog->update($validated);
+        $blog->tags()->sync($request->input('tags', []));
 
         return redirect()->route('blogs.show', $blog->id)
             ->with('success', 'Blog updated successfully!');

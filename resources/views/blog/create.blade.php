@@ -15,20 +15,7 @@
                     required/>
             </x-forms.group>
             <x-forms.group>
-                <div class="flex flex-row space-x-1 justify-around">
-                    <div>
-                        test
-                    </div>
-                    <div>
-                        test
-                    </div>
-                    <div>
-                        test
-                    </div>
-                    <div>
-                        test
-                    </div>
-                </div>
+                <x-forms.tags-selector></x-forms.tags-selector>
             </x-forms.group>
             <x-forms.group>
                 <div class="flex gap-4 pt-4">
@@ -63,7 +50,7 @@
                         your own blog.</p>
                     <x-forms.button
                         variant="primary"
-                        href="{{ route('dashboard') }}">
+                        href="{{ route('home') }}">
                         Browse Blogs
                     </x-forms.button>
                 </div>

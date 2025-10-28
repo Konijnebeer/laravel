@@ -15,6 +15,9 @@
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('home.search')" :active="request()->routeIs('home.search')">
+                        {{ __('Search') }}
+                    </x-nav-link>
                     {{--                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">--}}
                     {{--                        {{ __('Dashboard') }}--}}
                     {{--                    </x-nav-link>--}}
@@ -56,6 +59,16 @@
                         </x-slot>
 
                         <x-slot name="content">
+                            @if(Auth::user()->blogs()->exists())
+                                <x-dropdown-link :href="route('blogs.show', Auth::user()->blogs()->first())">
+                                    {{ __('Blog') }}
+                                </x-dropdown-link>
+                            @else
+                                <x-dropdown-link :href="route('blogs.create')">
+                                    {{ __('Create Blog') }}
+                                </x-dropdown-link>
+                            @endif
+
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
@@ -123,6 +136,17 @@
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
+
+                    @if(Auth::user()->blogs()->exists())
+                        <x-responsive-nav-link
+                            :href="route('blogs.show', Auth::user()->blogs()->first())">
+                            {{ __('Blog') }}
+                        </x-responsive-nav-link>
+                    @else
+                        <x-responsive-nav-link :href="route('blogs.create')">
+                            {{ __('Create Blog') }}
+                        </x-responsive-nav-link>
+                    @endif
 
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
+Route::redirect('/', '/home');
 
 
 Route::get('/dashboard', function () {
@@ -25,6 +26,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 Route::get('/home/search', [HomeController::class, 'search'])->name('home.search');
+Route::post('/home/search', [HomeController::class, 'results'])->name('home.results');
 
 
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {

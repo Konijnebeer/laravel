@@ -12,6 +12,9 @@
                 name="name"
                 placeholder="Enter an engaging title"
                 required/>
+            <x-forms.group>
+                <x-forms.tags-selector></x-forms.tags-selector>
+            </x-forms.group>
 
             <x-forms.file-upload
                 label="Header Image"
