@@ -14,7 +14,7 @@ class StorePostRequest extends FormRequest
     public function authorize(): bool
     {
 
-        return Gate::authorize('create', Post::class)->allowed();
+        return Gate::authorize('create', [Post::class, $this->route('blog')])->allowed();
     }
 
     /**

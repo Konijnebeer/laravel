@@ -11,7 +11,8 @@
     <a href="{{ route('blogs.show', $blog->id) }}" class="flex flex-col p-4 h-full">
         <!-- Icon - Top Right -->
         <div class="flex justify-end mb-2">
-            <span class="text-primary">
+            <span class="text-primary"
+                  style="view-transition-name: blog-icon-{{ $blog->id }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"
                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                      stroke-linejoin="round">
@@ -23,14 +24,18 @@
         </div>
 
         <!-- Title -->
-        <h3 class="font-bold text-xl text-primary mb-3 vt-title">
+        <h3 class="font-bold text-xl text-primary mb-3 vt-title"
+            style="view-transition-name: blog-title-{{ $blog->id }}">
             {{ $blog->user->name ?? 'Unknown' }}'s Blog
         </h3>
 
         <!-- Description -->
         @if($blog->description)
             <p class=" text-sm text-primary/80 mb-3 leading-relaxed
-        flex-grow">{{ Str::limit($blog->description, 120) }}</p>
+        flex-grow"
+               style="view-transition-name: blog-description-{{ $blog->id }}">
+                {{ $blog->description }}
+            </p>
         @endif
     </a>
 
@@ -39,7 +44,8 @@
         <!-- Stats - Bottom Left -->
         <div class="flex items-center gap-3 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2 shadow-sm">
             <!-- Posts Count -->
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1.5"
+                 style="view-transition-name: blog-post-counter-{{ $blog->id }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                      class="text-primary">
@@ -53,7 +59,8 @@
             </div>
 
             <!-- Followers Count -->
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-1.5"
+                 style="view-transition-name: blog-follow-counter-{{ $blog->id }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                      class="text-primary">
@@ -70,6 +77,7 @@
         <!-- Follow Button - Bottom Right -->
         @auth
             <button onclick="toggleFollow(event, {{ $blog->id }})"
+                    style="view-transition-name: blog-follow-{{ $blog->id }}"
                     class="follow-btn-{{ $blog->id }} {{ auth()->user()->followedBlogs->contains($blog->id) ? 'bg-fail hover:bg-secondary' : 'bg-success hover:bg-accent' }} text-white px-4 py-1.5 rounded-lg shadow-sm font-medium text-sm transition-colors">
                 <span
                     class="follow-text-{{ $blog->id }}">{{ auth()->user()->followedBlogs->contains($blog->id) ? 'Unfollow' : 'Follow' }}</span>
@@ -107,4 +115,3 @@
             .catch(console.error);
     }
 </script>
-

@@ -1,5 +1,6 @@
+@php use App\Models\Blog; @endphp
 <x-app-layout>
-    @if(Auth::user()->followedBlogs()->count() >= 5 || Auth::user()->isAdmin())
+    @if(Gate::allows('create', Blog::class) || Auth::user()->isAdmin())
         <x-forms.form-card
             action="{{ route('blogs.store') }}"
             method="POST"

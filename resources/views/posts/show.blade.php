@@ -1,3 +1,16 @@
+@php
+    use Illuminate\Support\Facades\Storage;
+
+    $liked = auth()->check() && $post->likedByUsers->contains(auth()->id());
+    $followed = auth()->check() && $post->blog && $post->blog->followers->contains(auth()->id());
+
+    $imageUrl = null;
+    if ($post->header_image) {
+        $imageUrl = preg_match('/^https?:\\/\\//i', $post->header_image)
+            ? $post->header_image
+            : Storage::url($post->header_image);
+    }
+@endphp
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -10,8 +23,8 @@
             @if($post->header_image)
                 <!-- Banner Image -->
                 <div class="h-80 overflow-hidden relative">
-                    <img src="{{ $post->header_image }}" alt="{{ $post->name }}" class="w-full h-full object-cover">
-                    class="w-full h-full object-cover">
+                    <img src="{{ $imageUrl }}" alt="{{ $post->name }}" class="w-full h-full object-cover"
+                         style="view-transition-name: post-image-{{ $post->id }}">
                     <!-- Gradient Overlay -->
                     <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/40 to-transparent"></div>
                 </div>
@@ -20,13 +33,17 @@
                 <div class="absolute bottom-0 left-0 right-0 p-8">
                     <div class="max-w-6xl mx-auto flex items-end justify-between">
                         <div>
-                            <h1 class="text-5xl font-bold text-white mb-2 drop-shadow-lg">{{ $post->name }}</h1>
+                            <h1 class="text-5xl font-bold text-white mb-2 drop-shadow-lg"
+                                style="view-transition-name: post-title-{{ $post->id }}">
+                                {{ $post->name }}
+                            </h1>
                             <!-- Blog Link -->
                             <a href="{{ route('blogs.show', $post->blog_id) }}"
                                class="inline-flex items-center gap-2 text-white/90 hover:text-white transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round">
+                                     stroke-linejoin="round"
+                                     style="view-transition-name: blog-icon-{{ $blog->id }}">
                                     <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/>
                                     <path d="M2 6h4"/>
                                     <path d="M2 10h4"/>
@@ -35,7 +52,10 @@
                                     <path
                                         d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>
                                 </svg>
-                                <span class="font-medium">{{ $post->blog->user->name ?? 'Unknown' }}'s Blog</span>
+                                <span class="font-medium"
+                                      style="view-transition-name: blog-title-{{ $blog->id }}">
+                                    {{ $post->blog->user->name ?? 'Unknown' }}'s Blog
+                                </span>
                             </a>
                         </div>
 
@@ -49,6 +69,7 @@
                                 $liked = auth()->user()->likedPosts->contains($post->id);
                             @endphp
                             <button onclick="toggleLike(event, {{ $post->id }})"
+                                    style="view-transition-name: post-like-{{ $post->id }}"
                                     class="like-btn-{{ $post->id }} flex items-center gap-3 {{ $liked ? 'bg-fail' : 'bg-accent' }} hover:bg-secondary text-white px-6 py-4 rounded-xl shadow-lg font-semibold transition-all hover:scale-105">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -71,7 +92,8 @@
                         @else
                             <!-- Static like count display for guests -->
                             <div
-                                class="flex items-center gap-3 bg-accent/80 text-white px-6 py-4 rounded-xl shadow-lg">
+                                class="flex items-center gap-3 bg-accent/80 text-white px-6 py-4 rounded-xl shadow-lg"
+                                style="view-transition-name: post-like-{{ $post->id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                      stroke-linejoin="round">
@@ -91,12 +113,16 @@
                 <div class="bg-accent py-12 px-8">
                     <div class="max-w-6xl mx-auto flex items-center justify-between">
                         <div>
-                            <h1 class="text-5xl font-bold text-primary mb-2">{{ $post->name }}</h1>
+                            <h1 class="text-5xl font-bold text-primary mb-2"
+                                style="view-transition-name: post-title-{{ $post->id }}">
+                                {{ $post->name }}
+                            </h1>
                             <a href="{{ route('blogs.show', $post->blog_id) }}"
                                class="inline-flex items-center gap-2 text-primary/80 hover:text-primary transition-colors">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round">
+                                     stroke-linejoin="round"
+                                     style="view-transition-name: blog-icon-{{ $blog->id }}">
                                     <path d="M13.4 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7.4"/>
                                     <path d="M2 6h4"/>
                                     <path d="M2 10h4"/>
@@ -105,7 +131,10 @@
                                     <path
                                         d="M21.378 5.626a1 1 0 1 0-3.004-3.004l-5.01 5.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>
                                 </svg>
-                                <span class="font-medium">{{ $post->blog->user->name ?? 'Unknown' }}'s Blog</span>
+                                <span class="font-medium"
+                                      style="view-transition-name: blog-title-{{ $blog->id }}">
+                                    {{ $post->blog->user->name ?? 'Unknown' }}'s Blog
+                                </span>
                             </a>
                         </div>
 

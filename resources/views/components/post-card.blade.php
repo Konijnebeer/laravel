@@ -18,9 +18,11 @@
    class="flex flex-col col-span-2 row-span-1 rounded-xl shadow-md overflow-hidden transition-transform hover:scale-[1.02] bg-accent">
     @if($imageUrl)
         <div class="h-28 overflow-hidden relative">
-            <img src="{{ $imageUrl }}" alt="{{ $post->name }}" class="w-full h-full object-cover">
+            <img src="{{ $imageUrl }}" alt="{{ $post->name }}" class="w-full h-full object-cover"
+                 style="view-transition-name: post-image-{{ $post->id }}">
             @auth
                 <button onclick="toggleLike(event, {{ $post->id }})"
+                        style="view-transition-name: post-like-{{ $post->id }}"
                         class="like-btn-{{ $post->id }} absolute top-2 right-2 p-2 bg-white/80 backdrop-blur-sm rounded-lg shadow-md hover:bg-white transition-all {{ $liked ? 'text-fail' : 'text-accent' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -39,7 +41,10 @@
             @endauth
         </div>
         <div class="p-4 flex-shrink-0">
-            <h3 class="font-bold text-lg text-primary line-clamp-2">{{ $post->name }}</h3>
+            <h3 class="font-bold text-lg text-primary line-clamp-2"
+                style="view-transition-name: post-title-{{ $post->id }}">
+                {{ $post->name }}
+            </h3>
         </div>
     @else
         <div class="flex-1 p-4 flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">

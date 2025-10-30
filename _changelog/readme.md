@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.2] - 2025-10-30
+
+### Added
+
+- View Transitions API
+    - Added to Blog card, and view
+    - Added to Post card, and view
+
+### Fixed
+
+- Blogs
+    - View Policy
+    - Create page uses the Policy with a Gate
+
 ## [0.1.1] - 2025-10-29
 
 ### Updated

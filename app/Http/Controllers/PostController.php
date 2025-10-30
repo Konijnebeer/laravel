@@ -38,7 +38,6 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request, Blog $blog)
     {
-        Gate::authorize('create', [Post::class, $blog]);
 
         $validated = $request->validated();
         $validated['blog_id'] = $blog->id;

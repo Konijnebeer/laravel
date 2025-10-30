@@ -46,7 +46,7 @@ class PostPolicy
      */
     public function create(User $user, Blog $blog): bool
     {
-        // Blog must be published
+        // Blog must be published and only the blog owner can create posts
         if ($blog->published_at !== null) {
             return $user->id === $blog->user_id;
         }
