@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePostRequest extends FormRequest
@@ -11,7 +12,8 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return Gate::authorize('update', $this->route('post'))->allowed();
+
     }
 
     /**
@@ -23,8 +25,8 @@ class UpdatePostRequest extends FormRequest
     {
         return [
             'name' => 'required|string|between:20,255',
-            'header_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'text' => 'required|string|between:100,300',
+            'header_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // have to make nullabale in db
+            'text' => 'required|string|between:100,1000',
             'rich_text' => 'nullable|json',
             'tags' => 'nullable|array',
             'tags.*' => 'integer|exists:tags,id',

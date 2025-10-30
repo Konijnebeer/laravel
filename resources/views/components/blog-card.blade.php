@@ -23,11 +23,14 @@
         </div>
 
         <!-- Title -->
-        <h3 class="font-bold text-xl text-primary mb-3">{{ $blog->user->name ?? 'Unknown' }}'s Blog</h3>
+        <h3 class="font-bold text-xl text-primary mb-3 vt-title">
+            {{ $blog->user->name ?? 'Unknown' }}'s Blog
+        </h3>
 
         <!-- Description -->
         @if($blog->description)
-            <p class="text-sm text-primary/80 mb-3 leading-relaxed flex-grow">{{ Str::limit($blog->description, 120) }}</p>
+            <p class=" text-sm text-primary/80 mb-3 leading-relaxed
+        flex-grow">{{ Str::limit($blog->description, 120) }}</p>
         @endif
     </a>
 

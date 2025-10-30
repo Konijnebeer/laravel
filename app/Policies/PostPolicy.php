@@ -25,7 +25,7 @@ class PostPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -44,15 +44,11 @@ class PostPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, $blogId = null): bool
+    public function create(User $user, Blog $blog): bool
     {
-        // User must own the blog to create posts in it
-        if ($blogId) {
-            $blog = Blog::find($blogId);
-            if ($blog->published_at !== null) {
-                return $blog && $user->id === $blog->user_id;
-            }
-            return false;
+        // Blog must be published
+        if ($blog->published_at !== null) {
+            return $user->id === $blog->user_id;
         }
         return false;
     }
@@ -60,7 +56,8 @@ class PostPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Post $post): bool
+    public
+    function update(User $user, Post $post): bool
     {
         // Only the blog owner can update their posts
         return $user->id === $post->blog->user_id;
@@ -69,7 +66,8 @@ class PostPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Post $post): bool
+    public
+    function delete(User $user, Post $post): bool
     {
         // Only the blog owner can delete their posts
         return $user->id === $post->blog->user_id;
@@ -78,7 +76,8 @@ class PostPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Post $post): bool
+    public
+    function restore(User $user, Post $post): bool
     {
         return $user->id === $post->blog->user_id;
     }
@@ -86,7 +85,8 @@ class PostPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Post $post): bool
+    public
+    function forceDelete(User $user, Post $post): bool
     {
         return $user->id === $post->blog->user_id;
     }

@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\UserPermission;
+use Gate;
 
 class RoleController extends Controller
 {
@@ -14,6 +15,8 @@ class RoleController extends Controller
      */
     public function index()
     {
+        Gate::authorize('view-any', Role::class);
+
         $roles = Role::all();
         return view('role.roles', compact('roles'));
     }
@@ -23,6 +26,8 @@ class RoleController extends Controller
      */
     public function create()
     {
+        Gate::authorize('create', Role::class);
+
         $permissions = UserPermission::cases();
         return view('role.create', ['permissions' => $permissions]);
 //        return view('role.create');
@@ -46,23 +51,25 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-//        $role = Role::find($roles);
-//        dd($roles);
+        Gate::authorize('view', $role);
+
         return view('role.show', compact('role'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Role $roles)
+    public function edit(Role $role)
     {
-        //
+        Gate::authorize('update', $role);
+
+        return view('role.edit', compact($role));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoleRequest $request, Role $roles)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
         //
     }
@@ -72,6 +79,8 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        dd($role);
+        Gate::authorize('delete', $role);
+
+        //
     }
 }

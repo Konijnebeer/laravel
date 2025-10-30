@@ -6,18 +6,19 @@ use App\Models\Blog;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Gate;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    use AuthorizesRequests;
 
     /**
      * Display a listing of the resource.
      */
     public function index(Blog $blog)
     {
+        Gate::authorize('view-any', [Post::class, $blog]);
+
         $posts = $blog->posts()->get();
         return view('posts.posts', compact('blog', 'posts'));
     }
@@ -27,7 +28,7 @@ class PostController extends Controller
      */
     public function create(Blog $blog)
     {
-        $this->authorize('create', [Post::class, $blog->id]);
+        Gate::authorize('create', [Post::class, $blog]);
 
         return view('posts.create', compact('blog'));
     }
@@ -37,7 +38,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request, Blog $blog)
     {
-        $this->authorize('create', [Post::class, $blog->id]);
+        Gate::authorize('create', [Post::class, $blog]);
 
         $validated = $request->validated();
         $validated['blog_id'] = $blog->id;
@@ -61,10 +62,10 @@ class PostController extends Controller
     public function show(Blog $blog, Post $post)
     {
         if ($post->blog_id !== $blog->id) {
-            abort(404);
+            abort(404, 'Page does not exist');
         }
 
-        $this->authorize('view', $post);
+        Gate::authorize('view', $post);
 
         return view('posts.show', compact(['blog', 'post']));
     }
@@ -74,11 +75,7 @@ class PostController extends Controller
      */
     public function edit(Blog $blog, Post $post)
     {
-        if ($post->blog_id !== $blog->id) {
-            abort(404);
-        }
-
-        $this->authorize('update', $post);
+        Gate::authorize('update', $post);
 
         return view('posts.edit', compact('blog', 'post'));
     }
@@ -88,11 +85,7 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Blog $blog, Post $post)
     {
-        if ($post->blog_id !== $blog->id) {
-            abort(404);
-        }
-
-        $this->authorize('update', $post);
+        Gate::authorize('update', $post);
 
         $validated = $request->validated();
 
@@ -119,11 +112,7 @@ class PostController extends Controller
      */
     public function destroy(Blog $blog, Post $post)
     {
-        if ($post->blog_id !== $blog->id) {
-            abort(404);
-        }
-
-        $this->authorize('delete', $post);
+        Gate::authorize('delete', $post);
 
         // Delete associated image file if it exists
         if ($post->header_image) {
@@ -175,7 +164,7 @@ class PostController extends Controller
             abort(404);
         }
 
-        $this->authorize('update', $post);
+        Gate::authorize('update', $post);
 
         $isPublished = $post->published_at !== null;
 

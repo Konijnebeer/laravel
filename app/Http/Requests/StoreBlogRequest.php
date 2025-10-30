@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Blog;
+use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,8 +14,8 @@ class StoreBlogRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::user()->isAdmin() || Auth::user()->followedBlogs()->count() >= 5;
 
+        return Gate::authorize('create', Blog::class)->allowed();
     }
 
     /**

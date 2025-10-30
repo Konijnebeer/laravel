@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.1.1] - 2025-10-29
+
+### Updated
+
+- Blogs
+    - Policy now uses gates
+    - Store & Update Requests now uses gates
+
+- Posts
+    - Policy now uses gates
+    - Store & Update Requests now uses gates
+
+- Tags
+    - Policy now uses gates
+    - Store & Update Requests now uses gates
+
+- Roles
+    - Policy now uses gates
+    - Store & Update Requests now uses gates
+
+### Added
+
+- Error Pages
+    - Custom http.cat error pages
+
 ## [0.1.0] - 2025-10-28
 
 ### Changed

@@ -68,11 +68,6 @@
                 </tr>
                 </tfoot>
             </table>
-            {{--            <x-table.data-table--}}
-            {{--                :items="$blogs"--}}
-            {{--                :columns="['user.name' => 'Username', 'description' => 'Description', 'published_at' => 'Published At']"--}}
-            {{--                emptyMessage="No users found. Add one to get started!"--}}
-            {{--            />--}}
         </section>
     @endauth
     @guest

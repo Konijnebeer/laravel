@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
+use Gate;
 use Illuminate\Support\Facades\Auth;
 
 class BlogController extends Controller
@@ -14,6 +15,8 @@ class BlogController extends Controller
      */
     public function index()
     {
+        Gate::authorize('view-any', Blog::class);
+
         $blogs = Blog::all();
         return view('blog.blogs', compact('blogs'));
     }
@@ -31,12 +34,6 @@ class BlogController extends Controller
      */
     public function store(StoreBlogRequest $request)
     {
-        if (!Auth::user()->isAdmin()) {
-            if (!Auth::user()->followedBlogs()->count() >= 5) {
-                abort(401, 'You need to follow at least 5 blogs');
-            }
-        }
-
         $validated = $request->validated();
         $validated['user_id'] = Auth()->id();
 
@@ -52,13 +49,8 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        if ($blog->published_at === null) {
-            if (Auth::user()->id !== $blog->user_id) {
-                if (!Auth::user()->isAdmin()) {
-                    abort(403, 'Blog not published');
-                }
-            }
-        }
+        Gate::authorize('view', $blog);
+
         return view('blog.show', compact('blog'));
     }
 
@@ -67,9 +59,8 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        if (Auth::user()->cannot('update', $blog)) {
-            abort(403);
-        }
+        Gate::authorize('update', $blog);
+
         return view('blog.edit', compact('blog'));
     }
 
@@ -92,9 +83,8 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        if (Auth::user()->cannot('delete', $blog)) {
-            abort(403);
-        }
+        Gate::authorize('delete', $blog);
+
         $blog->delete();
 
         return redirect()->route('blogs.index')

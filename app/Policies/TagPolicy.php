@@ -24,10 +24,7 @@ class TagPolicy
      */
     public function viewAny(User $user): bool
     {
-        dd('t');
-
-        return true;
-//        return false;
+        return false;
     }
 
     /**

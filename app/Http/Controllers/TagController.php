@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
+use Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -15,14 +16,9 @@ class TagController extends Controller
      */
     public function index()
     {
-//        dd(Auth::user()->cannot('view-any', 'tags'));
-        if (Auth::user()->cannot('view-any', Tag::class)) {
-            abort(403);
-        }
+        Gate::authorize('view-any', Tag::class);
+
         $tags = Tag::all();
-//        $tags = Tag::with('children.children')
-//            ->whereNull('parent_id')
-//            ->get();
         return view('tag.tags', compact('tags'));
     }
 
@@ -31,9 +27,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->cannot('create', Tag::class)) {
-            abort(403);
-        }
+        Gate::authorize('create', Tag::class);
 
         return view('tag.create');
     }
@@ -43,9 +37,6 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request)
     {
-        if (Auth::user()->cannot('create', Tag::class)) {
-            abort(403);
-        }
 
         $validated = $request->validated();
         $validated['slug'] = Str::slug($validated['name']);
@@ -60,9 +51,8 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        if (Auth::user()->cannot('view', $tag)) {
-            abort(403);
-        }
+        Gate::authorize('view', $tag);
+
 
         return view('tag.show', compact('tag'));
     }
@@ -72,9 +62,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        if (Auth::user()->cannot('update', $tag)) {
-            abort(403);
-        }
+        Gate::authorize('update', $tag);
 
         return view('tag.edit', compact('tag'));
     }
@@ -84,9 +72,6 @@ class TagController extends Controller
      */
     public function update(UpdateTagRequest $request, Tag $tag)
     {
-        if (Auth::user()->cannot('update', $tag)) {
-            abort(403);
-        }
 
         $validated = $request->validated();
         $validated['slug'] = Str::slug($validated['name']);
@@ -101,9 +86,7 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        if (Auth::user()->cannot('delete', $tag)) {
-            abort(403);
-        }
+        Gate::authorize('delete', $tag);
 
         $tag->delete();
 

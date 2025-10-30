@@ -26,7 +26,8 @@
                             </svg>
                         </div>
                         <div>
-                            <h1 class="text-4xl font-bold text-primary mb-2">{{ $blog->user->name ?? 'Unknown' }}'s
+                            <h1 class="text-4xl font-bold text-primary mb-2 vt-title">
+                                {{ $blog->user->name ?? 'Unknown' }}'s
                                 Blog</h1>
                             @if($blog->description)
                                 <p class="text-primary/80 text-lg">{{ $blog->description }}</p>

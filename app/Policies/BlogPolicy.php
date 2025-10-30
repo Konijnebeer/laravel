@@ -25,7 +25,7 @@ class BlogPolicy
      */
     public function viewAny(User $user): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -33,7 +33,12 @@ class BlogPolicy
      */
     public function view(User $user, Blog $blog): bool
     {
-        return false;
+        if ($blog->published_at === null) {
+            if (Auth::user()->id !== $blog->user_id) {
+                abort(403, 'Blog not published');
+            }
+        }
+        return true;
     }
 
     /**
@@ -41,6 +46,10 @@ class BlogPolicy
      */
     public function create(User $user): bool
     {
+        if (!Auth::user()->followedBlogs()->count() >= 5) {
+            abort(401, 'You need to follow at least 5 blogs');
+        }
+
         return true;
     }
 

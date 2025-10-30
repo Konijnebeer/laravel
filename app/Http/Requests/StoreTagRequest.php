@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Tag;
+use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTagRequest extends FormRequest
@@ -11,7 +13,7 @@ class StoreTagRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Gate::authorize('create', Tag::class)->allowed();
     }
 
     /**
