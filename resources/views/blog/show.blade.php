@@ -116,7 +116,7 @@
                             </svg>
                             <div>
                                 <p class="text-xs text-primary/70 font-medium">Followers</p>
-                                <p class="text-sm font-semibold text-primary">{{ $blog->followers->count() }}</p>
+                                <p class="text-sm font-semibold text-primary follow-count-{{ $blog->id }}">{{ $blog->followers->count() }}</p>
                             </div>
                         </div>
                     </div>
@@ -260,6 +260,7 @@
 
             const button = event.target.closest('button');
             const textSpan = button.querySelector(`.follow-text-${blogId}`);
+            const countElement = document.querySelector(`.follow-count-${blogId}`);
 
             fetch(`/blogs/${blogId}/toggle-follow`, {
                 method: 'POST',
@@ -278,6 +279,10 @@
                         button.classList.toggle('bg-fail', isFollowing);
                         button.classList.toggle('hover:bg-secondary', isFollowing);
                         textSpan.textContent = isFollowing ? 'Unfollow' : 'Follow';
+
+                        // Update follow count
+                        let currentCount = parseInt(countElement.textContent);
+                        countElement.textContent = isFollowing ? currentCount + 1 : currentCount - 1;
                     }
                 })
                 .catch(console.error);

@@ -1,4 +1,29 @@
+# Default Accounts
+
+**admin@email.com** `Admin123`
+**user@email.com** `password123`
+
+# Info
+
+Cat Images from: [Cats as a service](https://cataas.com/)
+Cat status coded Images from: [HTTP Cats](https://http.cat/)
+
+## AI use info
+
+The tags from the TagSeeder are made by AI and part of the main DatabaseSeeder.
+Most styling is done with the help of AI after I made the functional part.
+AI helped with recursive tag checkboxes component after frustrated debuging.
+I used AI To help check if my Model & Migrations lined up, and if I made any errors in form validations, I manually
+fixed them.
+
 # Changelog
+
+## [0.1.3] - 2025-11-02
+
+### Fixed
+
+- Blogs
+    - Both the card and view properly update the counter when a user follows
 
 ## [0.1.2] - 2025-10-30
 
@@ -16,7 +41,7 @@
 
 ## [0.1.1] - 2025-10-29
 
-### Updated
+### Changed
 
 - Blogs
     - Policy now uses gates
@@ -137,7 +162,7 @@
 
 ## [0.0.4] - 2025-10-21
 
-### Updated
+### Changed
 
 - Seeding
     - Users
@@ -201,7 +226,7 @@
 
 ## [0.0.2] - 2025-10-15
 
-### Updated
+### Changed
 
 - Users
     - role_id
@@ -229,7 +254,7 @@
 
 ## [0.0.2] - 2025-10-14
 
-### Updated
+### Changed
 
 - ERD
   ![img.png](images/ERDV2.png)

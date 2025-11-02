@@ -35,7 +35,7 @@ class BlogPolicy
     {
         if ($blog->published_at === null) {
             if (!auth()->check() || Auth::user()->id !== $blog->user_id) {
-                abort(403, 'Blog not published');
+                return false;
             }
         }
         return true;
@@ -48,7 +48,6 @@ class BlogPolicy
     {
         if (!Auth::user()->followedBlogs()->count() >= 5) {
             return false;
-            abort(401, 'You need to follow at least 5 blogs');
         }
 
         return true;
